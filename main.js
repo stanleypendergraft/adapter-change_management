@@ -69,6 +69,8 @@ function get(serviceNowTable, callback) {
     uri: `/api/now/table/${serviceNowTable}?sysparm_limit=1`,
   };
 
+}
+
 /**
  * @function post
  * @description Call the ServiceNow POST API.
