@@ -79,7 +79,7 @@ class ServiceNowConnector {
    if (query) {
      uri = uri + '?' + query;
    }
-    this.uri;
+    uri;
   }
 
   /**
@@ -134,7 +134,7 @@ class ServiceNowConnector {
     } else {
       callback.data = response;
     }
-    this.callback(callback.data, callback.error);
+    callback(callback.data, callback.error);
  }
 
  /**
@@ -176,8 +176,8 @@ class ServiceNowConnector {
      baseUrl: this.options.url,
      uri: uri,
    };
-   this.request(requestOptions, (error, response, body) => {
-     processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
+   request(requestOptions, (error, response, body) => {
+     this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
    });
  }
 
