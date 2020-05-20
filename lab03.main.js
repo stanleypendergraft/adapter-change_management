@@ -123,9 +123,6 @@ function processRequestResults(error, response, body, callback) {
 function sendRequest(callOptions, callback) {
   // Initialize return arguments for callback
   let uri;
-  if (callOptions.query)
-    uri = constructUri(callOptions.serviceNowTable, callOptions.query);
-  else
     uri = constructUri(callOptions.serviceNowTable);
   /**
    * You must build the requestOptions object.

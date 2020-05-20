@@ -98,7 +98,7 @@ class ServiceNowConnector {
    if (query) {
      uri = uri + '?' + query;
    }
-    uri;
+   return uri;
   }
 
   /**
@@ -112,9 +112,9 @@ class ServiceNowConnector {
    * @return {boolean} Returns true if instance is hibernating. Otherwise returns false.
    */
   isHibernating(response) {
-    return this.responseresponse.body.includes('Instance Hibernating page')
-    && this.response.body.includes('<html>')
-    && this.response.statusCode === 200;
+    return response.body.includes('Instance Hibernating page')
+    && response.body.includes('<html>')
+    && response.statusCode === 200;
   }
 
   /**
@@ -141,14 +141,13 @@ class ServiceNowConnector {
    * This function must not check for a hibernating instance;
    * it must call function isHibernating.
    */
-       if (error) {
+    if (error) {
       console.error('Error present.');
-      console.error(`${error}`);
       callback.error = error;
     } else if (!validResponseRegex.test(response.statusCode)) {
       console.error('Bad response code.');
       callback.response = response;
-    } else if (isHibernating(response)) {
+    } else if (this.isHibernating(response)) {
       callback.error = 'Service Now instance is hibernating';
       console.error(callback.error);
     } else {
@@ -176,10 +175,8 @@ class ServiceNowConnector {
  sendRequest(callOptions,callback) {
   // Initialize return arguments for callback
   let uri;
-  if (callOptions.query)
-    uri = this.constructUri(callOptions.serviceNowTable, callOptions.query);
-  else
-    uri = this.constructUri(callOptions.serviceNowTable);
+  uri = this.constructUri(callOptions.serviceNowTable, callOptions.query);
+   console.error(`${uri}`);
   /**
    * You must build the requestOptions object.
    * This is not a simple copy/paste of the requestOptions object
@@ -196,6 +193,7 @@ class ServiceNowConnector {
      baseUrl: callOptions.url,
      uri: uri,
    };
+
    request(requestOptions, (error, response, body) => {
      this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
    });
