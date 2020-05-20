@@ -63,6 +63,25 @@ class ServiceNowConnector {
     this.sendRequest(getCallOptions, (results, error) => callback(results, error));
   }
 
+   /**
+  * @memberof ServiceNowConnector
+  * @method post
+  * @description Call the ServiceNow POST API. Sets the API call's method,
+  *   then calls sendRequest().
+  *
+  * @param {object} callOptions - Passed call options.
+  * @param {string} callOptions.serviceNowTable - The table target of the ServiceNow table API.
+  * @param {iapCallback} callback - Callback a function.
+  * @param {(object|string)} callback.data - The API's response. Will be an object if sunnyday path.
+  *   Will be HTML text if hibernating instance.
+  * @param {error} callback.error - The error property of callback.
+  */
+ post(callback) {
+   let getCallOptions = { ...this.options };
+   getCallOptions.method = 'POST';
+   this.sendRequest(getCallOptions, (results, error) => callback(results, error));
+ }
+
  /**
   * @memberof ServiceNowConnector
   * @method constructUri
@@ -124,6 +143,7 @@ class ServiceNowConnector {
    */
        if (error) {
       console.error('Error present.');
+      console.error(`${error}`);
       callback.error = error;
     } else if (!validResponseRegex.test(response.statusCode)) {
       console.error('Bad response code.');
@@ -153,7 +173,7 @@ class ServiceNowConnector {
   *   Will be HTML text if hibernating instance.
   * @param {error} callback.error - The error property of callback.
   */
- sendRequest(callOptions, callback) {
+ sendRequest(callOptions,callback) {
   // Initialize return arguments for callback
   let uri;
   if (callOptions.query)
@@ -170,33 +190,15 @@ class ServiceNowConnector {
            method: callOptions.method,
            query: callOptions.query,
      auth: {
-       user: this.options.username,
-       pass: this.options.password,
+       user: callOptions.username,
+       pass: callOptions.password,
      },
-     baseUrl: this.options.url,
+     baseUrl: callOptions.url,
      uri: uri,
    };
    request(requestOptions, (error, response, body) => {
      this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
    });
- }
-
- /**
-  * @memberof ServiceNowConnector
-  * @method post
-  * @description Call the ServiceNow POST API. Sets the API call's method,
-  *   then calls sendRequest().
-  *
-  * @param {object} callOptions - Passed call options.
-  * @param {string} callOptions.serviceNowTable - The table target of the ServiceNow table API.
-  * @param {iapCallback} callback - Callback a function.
-  * @param {(object|string)} callback.data - The API's response. Will be an object if sunnyday path.
-  *   Will be HTML text if hibernating instance.
-  * @param {error} callback.error - The error property of callback.
-  */
- post(callOptions, callback) {
-   callOptions.method = 'POST';
-   this.sendRequest(callOptions, (results, error) => callback(results, error));
  }
 
 }
