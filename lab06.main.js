@@ -235,10 +235,6 @@ healthcheck(callback) {
       }
       if (results)
       {
-          if (results.has("body"))
-          {
-
-          }
           console.log(`\nResponse returned from POST request:\n${JSON.stringify(results)}`)
       }
     });
