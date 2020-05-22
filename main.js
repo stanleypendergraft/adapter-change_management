@@ -227,7 +227,7 @@ healthcheck(callback) {
      * post() takes a callback function.
      */
      const connector = new ServiceNowConnector(options);
-
+     console.log(`\nResponse returned from POST request:\n${JSON.stringify(results)}`)
      const newLocal = (callback.results, callback.error);
      connector.post(newLocal => {
       if (error) {
@@ -237,7 +237,7 @@ healthcheck(callback) {
       {
           if (results.has("body"))
           {
-
+                
           }
           console.log(`\nResponse returned from POST request:\n${JSON.stringify(results)}`)
       }
@@ -245,4 +245,38 @@ healthcheck(callback) {
   }
 }
 
-module.exports = ServiceNowAdapter;
+/**
+ * @function mainOnObject
+ * @description Instantiates an object from the imported ServiceNowConnector class
+ *   and tests the object's get and post methods.
+ */
+function mainOnObject() {
+  // Instantiate an object from class ServiceNowConnector.
+  postRecord(callback) {
+    /**
+     * Write the body for this function.
+     * The function is a wrapper for this.connector's post() method.
+     * Note how the object was instantiated in the constructor().
+     * post() takes a callback function.
+     */
+     const connector = new ServiceNowConnector(options);
+     console.log(`\nResponse returned from POST request:\n${JSON.stringify(results)}`)
+     const newLocal = (callback.results, callback.error);
+     connector.post(newLocal => {
+      if (error) {
+        console.error(`\nError returned from POST request:\n${JSON.stringify(error)}`);
+      }
+      if (results)
+      {
+          if (results.has("body"))
+          {
+                
+          }
+          console.log(`\nResponse returned from POST request:\n${JSON.stringify(results)}`)
+      }
+    });
+  }
+}
+
+//module.exports = ServiceNowAdapter;
+mainOnObject();
