@@ -94,7 +94,7 @@ class ServiceNowAdapter extends EventEmitter {
      *   that handles the response.
      */
     healthcheck(callback) {
-        this.getRecord((result, error) => {
+        this.getRecord((result,error) => {
             /**
              * For this lab, complete the if else conditional
              * statements that check if an error exists
@@ -116,8 +116,8 @@ class ServiceNowAdapter extends EventEmitter {
                  */
                 emitOffline();
                 log.error(`Error with ${this.id}`);
-                if (callback) {
-                    this.requestCallback(callback.result, callback.error);
+                if (result) {
+                    this.requestCallback(result, error);
                 }
             } else if (this.isHibernating(response)) {
                 log.error('Service Now instance is hibernating');
@@ -134,8 +134,8 @@ class ServiceNowAdapter extends EventEmitter {
                  */
                 emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
-                if (callback) {
-                    this.requestCallback(callback.result, callback.error);
+                if (result) {
+                    this.requestCallback(result, error);
                 }
             }
         });
@@ -196,8 +196,7 @@ class ServiceNowAdapter extends EventEmitter {
          */
         const connector = new ServiceNowConnector(options);
 
-        const newLocal = (callback.results, callback.error);
-        connector.get(newLocal => {
+        connector.get(callback => {
             if (callback.error) {
                 console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
             }
@@ -240,8 +239,7 @@ class ServiceNowAdapter extends EventEmitter {
          * post() takes a callback function.
          */
         const connector = new ServiceNowConnector(options);
-        const newLocal = (callback.results, callback.error);
-        connector.post(newLocal => {
+        connector.post(callback => {
             if (callback.error) {
                 console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
             }
