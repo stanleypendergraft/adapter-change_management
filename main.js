@@ -198,13 +198,13 @@ class ServiceNowAdapter extends EventEmitter {
 
         const newLocal = (callback.results, callback.error);
         connector.get(newLocal => {
-            if (error) {
-                console.error(`\nError returned from GET request:\n${JSON.stringify(error)}`);
+            if (callback.error) {
+                console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
             }
-            if (results) {
+            if (callback.results) {
                 var changeRequestArr;
-                if (results.has("body")) {
-                    jQuery.parseJson(JSON.stringify(results)).each(function() {
+                if (callback.results.has("body")) {
+                    jQuery.parseJson(JSON.stringify(callback.results)).each(function() {
 
                         var changeRequest;
                         changeRequest.change_ticket_key = this.number;                    
@@ -242,13 +242,13 @@ class ServiceNowAdapter extends EventEmitter {
         const connector = new ServiceNowConnector(options);
         const newLocal = (callback.results, callback.error);
         connector.post(newLocal => {
-            if (error) {
-                console.error(`\nError returned from POST request:\n${JSON.stringify(error)}`);
+            if (callback.error) {
+                console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
             }
-            if (results) {
+            if (callback.results) {
                 var changeRequestArr;
-                if (results.has("body")) {
-                    jQuery.parseJson(JSON.stringify(results)).each(function() {
+                if (callback.results.has("body")) {
+                    jQuery.parseJson(JSON.stringify(callback.results)).each(function() {
 
                         var changeRequest;
                         changeRequest.change_ticket_key = this.number;                    
