@@ -94,14 +94,14 @@ class ServiceNowAdapter extends EventEmitter {
      *   that handles the response.
      */
     healthcheck(callback) {
-        this.getRecord((result,error) => {
+        this.getRecord((callback) => {
             /**
              * For this lab, complete the if else conditional
              * statements that check if an error exists
              * or the instance was hibernating. You must write
              * the blocks for each branch.
              */
-            if (error) {
+            if (callback.error) {
                 /**
                  * Write this block.
                  * If an error was returned, we need to emit OFFLINE.
@@ -116,8 +116,8 @@ class ServiceNowAdapter extends EventEmitter {
                  */
                 emitOffline();
                 log.error(`Error with ${this.id}`);
-                if (result) {
-                    this.requestCallback(result, error);
+                if (callback.result) {
+                    this.requestCallback(callback.result, callback.error);
                 }
             } else if (this.isHibernating(response)) {
                 log.error('Service Now instance is hibernating');
@@ -134,8 +134,8 @@ class ServiceNowAdapter extends EventEmitter {
                  */
                 emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
-                if (result) {
-                    this.requestCallback(result, error);
+                if (callback.result) {
+                    this.requestCallback(callback.result, callback.error);
                 }
             }
         });
