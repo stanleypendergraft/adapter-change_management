@@ -203,12 +203,12 @@ class ServiceNowAdapter extends EventEmitter {
          */
         const connector = new ServiceNowConnector(options);
         connector.get(callback => {
+            let returnArr = { result: [] };
             if (callback.error) {
                 console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
             }
             if (callback) {
-                if (callback.body) {
-                    let returnArr = { result: [] };
+                if (callback.body) {                    
                     var resdata = JSON.parse(callback.body);
 
                     for (var i = 0; i < resdata.result.length; i++) {
@@ -247,12 +247,12 @@ class ServiceNowAdapter extends EventEmitter {
          */
         const connector = new ServiceNowConnector(options);
         connector.post(callback => {
+            let result;
             if (callback.error) {
                 console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
             }
             if (callback) {
                 if (callback.body) {
-                    let result;
                     var resdata = JSON.parse(callback.body);
 
                     result = {
@@ -279,10 +279,11 @@ class ServiceNowAdapter extends EventEmitter {
  * @description Instantiates an object from the imported ServiceNowConnector class
  *   and tests the object's get and post methods.
  */
-/*
 function mainOnObject() {
    // Instantiate an object from class ServiceNowConnector.
-      const connector = new ServiceNowConnector(options);
+   let callback;
+      console.log(this.postRecord(callback.result));
+     /* const connector = new ServiceNowConnector(options);
       connector.get(callback => {
           if (callback.error) {
               console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
@@ -351,8 +352,8 @@ function mainOnObject() {
                }
            }
        }
-   });
-}*/
+   });*/
+}
 
-//mainOnObject();
-module.exports = ServiceNowAdapter;
+mainOnObject();
+//module.exports = ServiceNowAdapter;
