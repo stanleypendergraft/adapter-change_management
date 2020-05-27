@@ -195,7 +195,6 @@ class ServiceNowAdapter extends EventEmitter {
          * get() takes a callback function.
          */
         const connector = new ServiceNowConnector(options);
-        log.debug("Got here!");
         connector.get(callback => {
             if (callback.error) {
                 console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
