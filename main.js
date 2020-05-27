@@ -226,6 +226,7 @@ class ServiceNowAdapter extends EventEmitter {
                 }
             }
         });
+        return callback(returnArr, callback.error);
     }
 
     /**
@@ -286,7 +287,9 @@ class ServiceNowAdapter extends EventEmitter {
                 }
             }
         });
+        return callback(returnArr, callback.error);
     }
+    
 }
 
 /**
