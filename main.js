@@ -217,7 +217,7 @@ class ServiceNowAdapter extends EventEmitter {
                         changeRequestArr.push(changeRequest);
                     }); 
                 }
-                console.log(`\nResponse returned from GET request:\n${JSON.stringify(changeRequestArr)}`)
+                console.log(`\nResponse returned from GET request:\n${JSON.stringify(changeRequestArr.toString())}`)
             }
         });
     }
@@ -260,7 +260,7 @@ class ServiceNowAdapter extends EventEmitter {
                         changeRequestArr.push(changeRequest);
                     }); 
                 }
-                console.log(`\nResponse returned from GET request:\n${JSON.stringify(changeRequestArr)}`)
+                console.log(`\nResponse returned from GET request:\n${JSON.stringify(changeRequestArr.toString())}`)
             }
         });
     }
