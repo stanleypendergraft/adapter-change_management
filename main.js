@@ -1,6 +1,13 @@
 // Import built-in Node.js package path.
 const path = require('path');
 
+const options = {
+  url: 'https://dev95682.service-now.com/',
+  username: 'admin',
+  password: 'Notthisone1!',
+  serviceNowTable: 'change_request'
+};
+
 /**
  * Import the ServiceNowConnector class from local Node.js module connector.js
  *   and assign it to constant ServiceNowConnector.
@@ -199,24 +206,24 @@ class ServiceNowAdapter extends EventEmitter {
             if (callback.error) {
                 console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
             }
-            if (callback.results) {
-                var changeRequestArr;
-                if (callback.results.has("body")) {
-                    jQuery.parseJson(JSON.stringify(callback.results)).each(function() {
+            if (callback) {
+                if (callback.body) {
+                    let returnArr = {result: []};
+                    var resdata = JSON.parse(callback.body);
 
-                        var changeRequest;
-                        changeRequest.change_ticket_key = this.number;                    
-                        changeRequest.active = this.active;
-                        changeRequest.priority = this.priority;
-                        changeRequest.description = this.description;
-                        changeRequest.work_start = this.work_start;
-                        changeRequest.work_endiption = this.work_end;
-                        changeRequest.change_ticket_key = this.sys_id;
-                        
-                        changeRequestArr.push(changeRequest);
-                    }); 
-                }
-                console.log(`\nResponse returned from GET request:\n${JSON.stringify(changeRequestArr.toString())}`)
+                    for(var i = 0; i < resdata.result.length; i++)
+                    {
+                        returnArr.result.push({change_ticket_number: resdata.result[i].number, 
+                                         active: resdata.result[i].active,
+                                         priority: resdata.result[i].priority,
+                                         description: resdata.result[i].description,
+                                         work_start: resdata.result[i].work_start,
+                                         work_end: resdata.result[i].work_end,
+                                         change_ticket_key: resdata.result[i].sys_id,
+                                         });                                               
+                    }
+                      console.log(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`)
+                }              
             }
         });
     }
@@ -248,12 +255,12 @@ class ServiceNowAdapter extends EventEmitter {
                     jQuery.parseJson(JSON.stringify(callback.results)).each(function() {
 
                         var changeRequest;
-                        changeRequest.change_ticket_key = this.number;                    
+                        changeRequest.change_ticket_number = this.number;                    
                         changeRequest.active = this.active;
                         changeRequest.priority = this.priority;
                         changeRequest.description = this.description;
                         changeRequest.work_start = this.work_start;
-                        changeRequest.work_endiption = this.work_end;
+                        changeRequest.work_end = this.work_end;
                         changeRequest.change_ticket_key = this.sys_id;
                         
                         changeRequestArr.push(changeRequest);
@@ -265,4 +272,95 @@ class ServiceNowAdapter extends EventEmitter {
     }
 }
 
-module.exports = ServiceNowAdapter;
+/**
+ * @function mainOnObject
+ * @description Instantiates an object from the imported ServiceNowConnector class
+ *   and tests the object's get and post methods.
+ */
+function mainOnObject() {
+  // Instantiate an object from class ServiceNowConnector.
+     /*   const connector = new ServiceNowConnector(options);
+        connector.get(callback => {
+            if (callback.error) {
+                console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
+            }
+            if (callback) {
+                if (callback.body) {
+                    let returnArr = {result: []};
+                    var resdata = JSON.parse(callback.body);
+
+                    for(var i = 0; i < resdata.result.length; i++)
+                    {
+                        returnArr.result.push({change_ticket_key: resdata.result[i].number, 
+                                         active: resdata.result[i].active,
+                                         priority: resdata.result[i].priority,
+                                         active: resdata.result[i].description,
+                                         description: resdata.result[i].work_start,
+                                         work_start: resdata.result[i].work_end,
+                                         change_ticket_key: resdata.result[i].sys_id,
+                                         });                                               
+                    }
+
+                    console.log(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`)
+                }
+                
+            }
+        });*/
+
+        const connector = new ServiceNowConnector(options);
+        connector.post(callback => {
+            if (callback.error) {
+                console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
+            }
+            if (callback) {                               
+                if (callback.body) {
+                    let returnArr = {result: []};
+                    var resdata = JSON.parse(callback.body);
+                    console.log(`\nResponse returned from Post request:\n${JSON.stringify(callback.body)}`)
+                    if (resdata.result)
+                    {
+                        console.log(`\nResponse returned from Post request:\n${ resdata.result.sys_id}`)
+                                         returnArr.result.push({change_ticket_number: resdata.result.number, 
+                                         active: resdata.result.active,
+                                         priority: resdata.result.priority,
+                                         description: resdata.result.description,
+                                         work_start: resdata.result.work_start,
+                                         work_end: resdata.result.work_end,
+                                         change_ticket_key: resdata.result.sys_id
+                                         });   
+
+                                         console.log(`\nResponse returned from Post request:\n${JSON.stringify(returnArr)}`)  
+                    }
+                    else
+                    {
+
+                    for(var i = 0; i < resdata.result.length; i++)
+                    {
+                        returnArr.changeRequest.push({change_ticket_number: resdata.result[i].number, 
+                                         active: resdata.result[i].active,
+                                         priority: resdata.result[i].priority,
+                                         description: resdata.result[i].description,
+                                         work_start: resdata.result[i].work_start,
+                                         work_end: resdata.result[i].work_end,
+                                         change_ticket_key: resdata.result[i].sys_id
+                                         });                                               
+                    } 
+                    console.log(`\nResponse returned from Post request:\n${JSON.stringify(returnArr)}`)
+                    }
+                }                
+            }
+     });
+
+/*  connector.post((results,error) => {
+    if (error) {
+      console.error(`\nError returned from POST request:\n${JSON.stringify(error)}`);
+    }
+    if (results)
+    {
+        console.log(`\nResponse returned from POST request:\n${JSON.stringify(results)}`)
+    }
+  });*/
+}
+
+mainOnObject();
+//module.exports = ServiceNowAdapter;
