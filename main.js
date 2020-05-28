@@ -279,11 +279,10 @@ class ServiceNowAdapter extends EventEmitter {
  * @description Instantiates an object from the imported ServiceNowConnector class
  *   and tests the object's get and post methods.
  */
-function mainOnObject() {
+/*function mainOnObject() {
    // Instantiate an object from class ServiceNowConnector.
-   let callback;
-      console.log(this.postRecord(callback.result));
-     /* const connector = new ServiceNowConnector(options);
+         //console.log(`\nResponse returned from Post request:`)
+     const connector = new ServiceNowConnector(options);
       connector.get(callback => {
           if (callback.error) {
               console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
@@ -352,8 +351,8 @@ function mainOnObject() {
                }
            }
        }
-   });*/
-}
+   });
+}*/
 
-mainOnObject();
-//module.exports = ServiceNowAdapter;
+//mainOnObject();
+module.exports = ServiceNowAdapter;
