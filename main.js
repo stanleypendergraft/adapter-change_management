@@ -121,14 +121,14 @@ class ServiceNowAdapter extends EventEmitter {
                  * healthcheck(), execute it passing the error seen as an argument
                  * for the callback's errorMessage parameter.
                  */
-                emitOnline();
+                emitOffline();
                 log.error(`Error with ${this.id}`);
                 if(callback)
                 {
                     this.requestCallback(callback.result, callback.error);
                 }
             } else if (this.isHibernating(response)) {
-                emitOnline();
+                emitOffline();
                 log.error('Service Now instance is hibernating');
             } else {
                 /**
