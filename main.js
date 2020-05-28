@@ -123,8 +123,12 @@ class ServiceNowAdapter extends EventEmitter {
                  */
                 emitOffline();
                 log.error(`Error with ${this.id}`);
-                this.requestCallback(callback.result, callback.error);
+                if(callback)
+                {
+                    this.requestCallback(callback.result, callback.error);
+                }
             } else if (this.isHibernating(response)) {
+                emitOffline();
                 log.error('Service Now instance is hibernating');
             } else {
                 /**
@@ -139,7 +143,10 @@ class ServiceNowAdapter extends EventEmitter {
                  */
                 emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
-                this.requestCallback(callback.result, callback.error);
+                if(callback)
+                {
+                    this.requestCallback(callback.result, callback.error);
+                }
             }
         });
     }
