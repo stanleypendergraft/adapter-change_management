@@ -1,12 +1,13 @@
 // Import built-in Node.js package path.
 const path = require('path');
-
+/*
 const options = {
     url: 'https://dev95682.service-now.com/',
     username: 'admin',
     password: 'Notthisone1!',
     serviceNowTable: 'change_request'
 };
+*/
 
 /**
  * Import the ServiceNowConnector class from local Node.js module connector.js
@@ -100,7 +101,7 @@ class ServiceNowAdapter extends EventEmitter {
      * @param {ServiceNowAdapter~requestCallback} [callback] - The optional callback
      *   that handles the response.
      */
-    healthcheck(callback) {
+    healthcheck() {
         this.getRecord((callback) => {
             /**
              * For this lab, complete the if else conditional
@@ -108,7 +109,6 @@ class ServiceNowAdapter extends EventEmitter {
              * or the instance was hibernating. You must write
              * the blocks for each branch.
              */
-            console.log(`\nStarting healthcheck:\n${JSON.stringify(callback.error)}`) 
             if (callback.error) {
                 /**
                  * Write this block.
@@ -205,7 +205,8 @@ class ServiceNowAdapter extends EventEmitter {
          * Note how the object was instantiated in the constructor().
          * get() takes a callback function.
          */
-        const connector = new ServiceNowConnector(options);
+        //const connector = new ServiceNowConnector(options);
+        const connector = new ServiceNowConnector();
         connector.get(callback => {
             let returnArr = { result: [] };
             if (callback.error) {
@@ -250,7 +251,8 @@ class ServiceNowAdapter extends EventEmitter {
          * Note how the object was instantiated in the constructor().
          * post() takes a callback function.
          */
-        const connector = new ServiceNowConnector(options);
+        //const connector = new ServiceNowConnector(options);
+        const connector = new ServiceNowConnector();
         connector.post(callback => {
             let result;
             if (callback.error) {
