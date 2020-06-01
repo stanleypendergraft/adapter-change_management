@@ -210,12 +210,12 @@ class ServiceNowAdapter extends EventEmitter {
         let connectorCallback = connector.callback;
         connector.get(connectorCallback => {
             let returnArr = { result: [] };
-            if (connectorCallback.error) {
-                console.error(`\nError returned from GET request:\n${JSON.stringify(callconnectorCallbackback.error)}`);
+            if (callback.error) {
+                console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
             }
-            if (connectorCallback) {
-                if (connectorCallback.body) {                    
-                    var resdata = JSON.parse(connectorCallback.body);
+            if (callback) {
+                if (callback.body) {                    
+                    var resdata = JSON.parse(callback.body);
 
                     for (var i = 0; i < resdata.result.length; i++) {
                         returnArr.result.push({
@@ -229,8 +229,8 @@ class ServiceNowAdapter extends EventEmitter {
                         });
                     }
                     console.log(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`)
-                    connectorCallback.body = '';
-                    connectorCallback.body = JSON.stringify(returnArr);
+                    callback.body = '';
+                    callback.body = JSON.stringify(returnArr);
                 }
             }
         });    
@@ -257,12 +257,12 @@ class ServiceNowAdapter extends EventEmitter {
         let connectorCallback = connector.callback;
         connector.post(connectorCallback => {
             let result;
-            if (callconnectorCallbackback.error) {
-                console.error(`\nError returned from POST request:\n${JSON.stringify(connectorCallback.error)}`);
+            if (callback.error) {
+                console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
             }
-            if (connectorCallback) {
-                if (connectorCallback.body) {
-                    var resdata = JSON.parse(connectorCallback.body);
+            if (callback) {
+                if (callback.body) {
+                    var resdata = JSON.parse(callback.body);
 
                     result = {
                         change_ticket_number: resdata.result.number,
@@ -275,8 +275,8 @@ class ServiceNowAdapter extends EventEmitter {
                     };
 
                     console.log(`\nResponse returned from Post request:\n${JSON.stringify(result)}`)
-                    connectorCallback.body = '';
-                    connectorCallback.body = JSON.stringify(result);
+                    callback.body = '';
+                    callback.body = JSON.stringify(result);
                 }
             }
         });
