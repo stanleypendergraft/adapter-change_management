@@ -108,6 +108,7 @@ class ServiceNowAdapter extends EventEmitter {
              * or the instance was hibernating. You must write
              * the blocks for each branch.
              */
+            console.log(`\nStarting healthcheck:\n${JSON.stringify(callback.error)}`) 
             if (callback.error) {
                 /**
                  * Write this block.
@@ -226,6 +227,8 @@ class ServiceNowAdapter extends EventEmitter {
                         });
                     }
                     console.log(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`)
+                    callback.body = '';
+                    callback.body = JSON.stringify(returnArr);
                 }
             }
         });    
@@ -268,11 +271,100 @@ class ServiceNowAdapter extends EventEmitter {
                     };
 
                     console.log(`\nResponse returned from Post request:\n${JSON.stringify(result)}`)
+                    callback.body = '';
+                    callback.body = JSON.stringify(result);
                 }
             }
         });
     }
     
 }
+
+/*
+function mainOnObject() {
+  // Instantiate an object from class ServiceNowConnector.
+       const connector = new ServiceNowConnector(options);
+        connector.get(callback => {
+            if (callback.error) {
+                console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
+            }
+            if (callback) {
+                if (callback.body) {
+                    console.error(`\nBody :\n${callback.body}`);
+                    let returnArr = {result: []};
+                    var resdata = JSON.parse(callback.body);
+                    console.error(`\nresdata :\n${JSON.stringify(resdata)}`);
+                    for(var i = 0; i < resdata.result.length; i++)
+                    {
+                        delete resdata.result[0].approval_set;
+                        returnArr.result.push({change_ticket_key: resdata.result[i].number, 
+                                         active: resdata.result[i].active,
+                                         priority: resdata.result[i].priority,
+                                         active: resdata.result[i].description,
+                                         description: resdata.result[i].work_start,
+                                         work_start: resdata.result[i].work_end,
+                                         change_ticket_key: resdata.result[i].sys_id,
+                                         });                                               
+                    }
+                    console.error(`\nresdata :\n${JSON.stringify(resdata)}`);
+                    console.log(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`)
+                    console.error(`\nBody 3 :\n${callback.content}`);
+                    callback.content = ''; //.push(returnArr);
+                    callback.content = JSON.stringify(returnArr);
+                    callback.body = '';
+                    callback.body = JSON.stringify(returnArr);
+                    console.error(`\nBody 3 :\n${callback.content}`);
+                    console.error(`\nBody 2 :\n${callback.body}`);
+                }
+                
+            }
+        });
+
+        const connector = new ServiceNowConnector(options);
+        connector.post(callback => {
+            if (callback.error) {
+                console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
+            }
+            if (callback) {                               
+                if (callback.body) {
+                    let returnArr = {result: []};
+                    var resdata = JSON.parse(callback.body);
+                    console.log(`\nResponse returned from Post request:\n${JSON.stringify(callback.body)}`)
+                    if (resdata.result)
+                    {
+                        console.log(`\nResponse returned from Post request:\n${ resdata.result.sys_id}`)
+                                         returnArr.result.push({change_ticket_number: resdata.result.number, 
+                                         active: resdata.result.active,
+                                         priority: resdata.result.priority,
+                                         description: resdata.result.description,
+                                         work_start: resdata.result.work_start,
+                                         work_end: resdata.result.work_end,
+                                         change_ticket_key: resdata.result.sys_id
+                                         });   
+
+                                         console.log(`\nResponse returned from Post request:\n${JSON.stringify(returnArr)}`)  
+                    }
+                    else
+                    {
+
+                    for(var i = 0; i < resdata.result.length; i++)
+                    {
+                        returnArr.changeRequest.push({change_ticket_number: resdata.result[i].number, 
+                                         active: resdata.result[i].active,
+                                         priority: resdata.result[i].priority,
+                                         description: resdata.result[i].description,
+                                         work_start: resdata.result[i].work_start,
+                                         work_end: resdata.result[i].work_end,
+                                         change_ticket_key: resdata.result[i].sys_id
+                                         });                                               
+                    } 
+                    console.log(`\nResponse returned from Post request:\n${JSON.stringify(returnArr)}`)
+                    }
+                }                
+            }
+     });
+}*/
+
+//mainOnObject();
 
 module.exports = ServiceNowAdapter;
