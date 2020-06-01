@@ -208,7 +208,7 @@ class ServiceNowAdapter extends EventEmitter {
         //const connector = new ServiceNowConnector(options);
         const connector = new ServiceNowConnector();
         let connectorCallback = connector.callback;
-        connector.get(ghis => {
+        connector.get(connectorCallback => {
             let returnArr = { result: [] };
             if (connectorCallback.error) {
                 console.error(`\nError returned from GET request:\n${JSON.stringify(callconnectorCallbackback.error)}`);
