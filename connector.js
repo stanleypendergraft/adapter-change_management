@@ -147,7 +147,7 @@ class ServiceNowConnector {
       callback.error = error;
     } else if (!validResponseRegex.test(response.statusCode)) {
       log.error('Bad response code.');
-      callback.error = response;
+      callback.error = error;
     } else if (this.isHibernating(response)) {
       callback.error = 'Service Now instance is hibernating';
       log.error(callback.error);
