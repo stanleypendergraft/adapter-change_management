@@ -153,7 +153,7 @@ class ServiceNowConnector {
       console.error(callback.error);
     } else {
       callback.data = response;
-      callback.body = body;
+      //callback.body = body;
     }
     callback(callback.data, callback.error);
  }
