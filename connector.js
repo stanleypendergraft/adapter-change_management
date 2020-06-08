@@ -60,6 +60,7 @@ class ServiceNowConnector {
     let getCallOptions = { ...this.options };
     getCallOptions.method = 'GET';
     getCallOptions.query = 'sysparm_limit=1';
+    log.info(`\nStarting get.\n`);
     this.sendRequest(getCallOptions, (results, error) => callback(results, error));
   }
 
@@ -177,7 +178,7 @@ class ServiceNowConnector {
   // Initialize return arguments for callback
   let uri;
   uri = this.constructUri(callOptions.serviceNowTable, callOptions.query);
-   console.error(`${uri}`);
+  //console.error(`${uri}`);
   /**
    * You must build the requestOptions object.
    * This is not a simple copy/paste of the requestOptions object
@@ -194,7 +195,7 @@ class ServiceNowConnector {
      baseUrl: callOptions.url,
      uri: uri,
    };
-
+   log.info(`\nStarting sendRequest.\n`);
    request(requestOptions, (error, response, body) => {
      this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
    });

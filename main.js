@@ -88,9 +88,9 @@ class ServiceNowAdapter extends EventEmitter {
     connect() {
         // As a best practice, Itential recommends isolating the health check action
         // in its own method.
-        console.log('\nStarting connect.\n');
+        log.info('\nStarting connect.\n');
         this.healthcheck(this.callback);
-        console.log('\nEnding connect.\n');
+        log.info('\nEnding connect.\n');
     }
 
     /**
@@ -105,15 +105,15 @@ class ServiceNowAdapter extends EventEmitter {
      */
     healthcheck(callback) {
         this.emitStatus('ONLINE');
-        console.log('\nStarting health check before get record.\n');
-        this.getRecord((result, error) => {
+        log.info('\nStarting health check before get record.\n');
+        this.getRecord((callback) => { 
             /**
              * For this lab, complete the if else conditional
              * statements that check if an error exists
              * or the instance was hibernating. You must write
              * the blocks for each branch.
              */
-            console.log('\nStarting health check.\n');
+            log.info('\nStarting health check.\n');
             if (error) {
                 /**
                  * Write this block.
@@ -127,13 +127,16 @@ class ServiceNowAdapter extends EventEmitter {
                  * healthcheck(), execute it passing the error seen as an argument
                  * for the callback's errorMessage parameter.
                  */
-                console.log('\nInside error in health check.\n'); 
+                log.info('\nInside error in health check.\n'); 
                 emitOffline();
                 log.error(`Error with ${this.id}`);
                 if(callback)
                 {
                     this.requestCallback(result, error);
                 }
+            } else if (this.isHibernating(response)) {
+                emitOffline();
+                log.error('Service Now instance is hibernating');    
             } else {
                 /**
                  * Write this block.
@@ -145,7 +148,7 @@ class ServiceNowAdapter extends EventEmitter {
                  * parameter as an argument for the callback function's
                  * responseData parameter.
                  */
-                console.log('\nAll good in health check.\n'); 
+                log.info('\nAll good in health check.\n'); 
                 emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
                 if(callback)
@@ -153,8 +156,10 @@ class ServiceNowAdapter extends EventEmitter {
                     this.requestCallback(result, error);
                 }
             }
-            console.log('\nHealth check is over.\n');
+            log.info('\nHealth check is over.\n');
         });
+        log.info('\nHealth check is over 2.\n');
+        //console.log(`\nHealth check callback:\n${JSON.stringify(callback)}`);
     }
 
     /**
@@ -203,7 +208,7 @@ class ServiceNowAdapter extends EventEmitter {
      * @param {ServiceNowAdapter~requestCallback} callback - The callback that
      *   handles the response.
      */
-    getRecord(result, error) {
+    getRecord(callback) {
         /**
          * Write the body for this function.
          * The function is a wrapper for this.connector's get() method.
@@ -212,14 +217,16 @@ class ServiceNowAdapter extends EventEmitter {
          */
         //const connector = new ServiceNowConnector(options);
         //const connector = new ServiceNowConnector();
+        log.info(`\nBefore get record.\n`);
         this.connector.get(callback => {
+            log.info(`\nInside get record.\n`);
             let returnArr = { result: [] };
           /*  if (callback.error) {
                 console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
             }*/
             if (callback) {
-                if (callback.body) {                    
-                    var resdata = JSON.parse(callback.body);
+                if (callback.data) {                    
+                    var resdata = JSON.parse(callback.data);
 
                     for (var i = 0; i < resdata.result.length; i++) {
                         returnArr.result.push({
@@ -232,9 +239,9 @@ class ServiceNowAdapter extends EventEmitter {
                             change_ticket_key: resdata.result[i].sys_id,
                         });
                     }
-                    console.log(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`);
-                    callback.body = '';
-                    callback.body = JSON.stringify(returnArr);
+                    log.info(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`);
+                    callback.data = '';
+                    callback.data = JSON.stringify(returnArr);
                 }
             }
             console.log(`\nLeaving get record.\n`);
@@ -259,14 +266,14 @@ class ServiceNowAdapter extends EventEmitter {
          */
         //const connector = new ServiceNowConnector(options);
         //const connector = new ServiceNowConnector();
-        this.connector.post(callback => {
+        this.connector.post(callback  => {
             let result;
             /*if (callback.error) {
                 console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
             }*/
             if (callback) {
-                if (callback.body) {
-                    var resdata = JSON.parse(callback.body);
+                if (callback.data) {
+                    var resdata = JSON.parse(callback.data);
 
                     result = {
                         change_ticket_number: resdata.result.number,
@@ -278,9 +285,9 @@ class ServiceNowAdapter extends EventEmitter {
                         change_ticket_key: resdata.result.sys_id
                     };
 
-                    console.log(`\nResponse returned from Post request:\n${JSON.stringify(result)}`)
-                    callback.body = '';
-                    callback.body = JSON.stringify(result);
+                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(result)}`)
+                    callback.data = '';
+                    callback.data = JSON.stringify(result);
                 }
             }
         });
