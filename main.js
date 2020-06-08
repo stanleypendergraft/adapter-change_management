@@ -106,8 +106,7 @@ class ServiceNowAdapter extends EventEmitter {
     healthcheck(callback) {
         this.emitStatus('ONLINE');
         log.info('\nStarting health check before get record.\n');
-        let thiscallback = callback;
-        this.getRecord((thiscallback) => { 
+        this.getRecord((callback) => { 
             /**
              * For this lab, complete the if else conditional
              * statements that check if an error exists
@@ -115,7 +114,7 @@ class ServiceNowAdapter extends EventEmitter {
              * the blocks for each branch.
              */
             log.info('\nStarting health check.\n');
-            if (thiscallback.error) {
+            if (callback.error) {
                 /**
                  * Write this block.
                  * If an error was returned, we need to emit OFFLINE.
@@ -131,11 +130,11 @@ class ServiceNowAdapter extends EventEmitter {
                 log.info('\nInside error in health check.\n'); 
                 emitOffline();
                 log.error(`Error with ${this.id}`);
-                if(thiscallback.error)
+                if(callback.error)
                 {
-                    this.requestCallback(thiscallback);
+                    this.requestCallback(callback);
                 }
-            } else if (this.isHibernating(thiscallback)) {
+            } else if (this.isHibernating(callback)) {
                 emitOffline();
                 log.error('Service Now instance is hibernating');    
             } else {
@@ -152,9 +151,9 @@ class ServiceNowAdapter extends EventEmitter {
                 log.info('\nAll good in health check.\n'); 
                 emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
-                if(thiscallback)
+                if(callback)
                 {
-                    this.requestCallback(thiscallback);
+                    this.requestCallback(callback);
                 }
             }
             log.info('\nHealth check is over.\n');
