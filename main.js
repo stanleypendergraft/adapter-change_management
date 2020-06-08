@@ -106,7 +106,8 @@ class ServiceNowAdapter extends EventEmitter {
     healthcheck(callback) {
         this.emitStatus('ONLINE');
         log.info('\nStarting health check before get record.\n');
-        this.getRecord((callback) => { 
+        let thiscallback = callback;
+        this.getRecord((thiscallback) => { 
             /**
              * For this lab, complete the if else conditional
              * statements that check if an error exists
@@ -114,7 +115,7 @@ class ServiceNowAdapter extends EventEmitter {
              * the blocks for each branch.
              */
             log.info('\nStarting health check.\n');
-            if (error) {
+            if (thiscallback.error) {
                 /**
                  * Write this block.
                  * If an error was returned, we need to emit OFFLINE.
@@ -130,11 +131,11 @@ class ServiceNowAdapter extends EventEmitter {
                 log.info('\nInside error in health check.\n'); 
                 emitOffline();
                 log.error(`Error with ${this.id}`);
-                if(callback)
+                if(thiscallback.error)
                 {
-                    this.requestCallback(result, error);
+                    this.requestCallback(thiscallback);
                 }
-            } else if (this.isHibernating(response)) {
+            } else if (this.isHibernating(thiscallback)) {
                 emitOffline();
                 log.error('Service Now instance is hibernating');    
             } else {
@@ -151,9 +152,9 @@ class ServiceNowAdapter extends EventEmitter {
                 log.info('\nAll good in health check.\n'); 
                 emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
-                if(callback)
+                if(thiscallback)
                 {
-                    this.requestCallback(result, error);
+                    this.requestCallback(thiscallback);
                 }
             }
             log.info('\nHealth check is over.\n');
@@ -224,9 +225,9 @@ class ServiceNowAdapter extends EventEmitter {
           /*  if (callback.error) {
                 console.error(`\nError returned from GET request:\n${JSON.stringify(callback.error)}`);
             }*/
-            if (callback) {
-                if (callback.data) {                    
-                    var resdata = JSON.parse(callback.data);
+            if (callback) { 
+                if (callback.body) {                    
+                    var resdata = JSON.parse(callback.body);
 
                     for (var i = 0; i < resdata.result.length; i++) {
                         returnArr.result.push({
@@ -240,11 +241,11 @@ class ServiceNowAdapter extends EventEmitter {
                         });
                     }
                     log.info(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`);
-                    callback.data = '';
-                    callback.data = JSON.stringify(returnArr);
+                    callback.body = '';
+                    callback.body = JSON.stringify(returnArr);
                 }
             }
-            console.log(`\nLeaving get record.\n`);
+            log.info(`\nLeaving get record.\n`);
         });    
     }
 
@@ -272,8 +273,8 @@ class ServiceNowAdapter extends EventEmitter {
                 console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
             }*/
             if (callback) {
-                if (callback.data) {
-                    var resdata = JSON.parse(callback.data);
+                if (callback.body) {
+                    var resdata = JSON.parse(callback.body);
 
                     result = {
                         change_ticket_number: resdata.result.number,
@@ -286,8 +287,8 @@ class ServiceNowAdapter extends EventEmitter {
                     };
 
                     log.info(`\nResponse returned from Post request:\n${JSON.stringify(result)}`)
-                    callback.data = '';
-                    callback.data = JSON.stringify(result);
+                    callback.body = '';
+                    callback.body = JSON.stringify(result);
                 }
             }
         });
