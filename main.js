@@ -220,6 +220,7 @@ class ServiceNowAdapter extends EventEmitter {
         log.info(`\nBefore get record.\n`);
         this.connector.get(callback => {
             log.info(`\nInside get record.\n`);
+            log.info(`\nCall back body returned from GET request:\n${JSON.stringify(callback.body)}`);
             let returnArr = { result: [] };
             if (callback) { 
                 if (callback.body) {                    
@@ -239,6 +240,7 @@ class ServiceNowAdapter extends EventEmitter {
                     log.info(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`);
                     callback.body = '';
                     callback.body = JSON.stringify(returnArr);
+                    log.info(`\nResponse returned after GET request:\n${JSON.stringify(returnArr)}`);
                 }
             }
             log.info(`\nLeaving get record.\n`);
