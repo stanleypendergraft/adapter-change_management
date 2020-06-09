@@ -220,12 +220,12 @@ class ServiceNowAdapter extends EventEmitter {
                     
                     //callback.r = '';
                     let temp1 = JSON.stringify(returnArr);
-                    let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
+                    //let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
                     //callback.body = temp2;
                     results.body = "";
-                    results.body = temp2;
-                    callback(temp2,error);
-                    log.info(`\nResponse returned after GET request:\n${temp2}`);
+                    results.body = temp1;
+                    callback(temp1,error);
+                    log.info(`\nResponse returned after GET request:\n${temp1}`);
                 }
             }
         });    
@@ -270,11 +270,11 @@ class ServiceNowAdapter extends EventEmitter {
                     
                     results.body = '';
                     let temp1 = JSON.stringify(result);
-                    let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
-                    results.body = temp2;
-                    results.body = JSON.stringify(temp2);
-                    callback(temp2,error);
-                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(temp2)}`);
+                    //let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
+                    results.body = temp1;
+                    results.body = JSON.stringify(temp1);
+                    callback(temp1,error);
+                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(temp1)}`);
                 }
             }
         });
