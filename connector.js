@@ -146,7 +146,7 @@ class ServiceNowConnector {
       callback.error = error;
     } else if (!validResponseRegex.test(response.statusCode)) {
       log.error('Bad response code.');
-      callback.error = error;
+      callback.error = response;
     } else if (this.isHibernating(response)) {
       callback.error = 'Service Now instance is hibernating';
       log.error(callback.error);
@@ -194,7 +194,6 @@ class ServiceNowConnector {
      baseUrl: callOptions.url,
      uri: uri,
    };
-   log.info(`\nStarting sendRequest.\n`);
    request(requestOptions, (error, response, body) => {
      this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
    });

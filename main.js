@@ -1,13 +1,5 @@
 // Import built-in Node.js package path.
 const path = require('path');
-/*
-const options = {
-    url: 'https://dev95682.service-now.com/',
-    username: 'admin',
-    password: 'Notthisone1!',
-    serviceNowTable: 'change_request'
-};
-*/
 
 /**
  * Import the ServiceNowConnector class from local Node.js module connector.js
@@ -102,8 +94,6 @@ class ServiceNowAdapter extends EventEmitter {
      *   that handles the response.
      */
     healthcheck(callback) {
-        //this.emitStatus('ONLINE');
-        log.info('\nStarting health check before get record.\n');
         this.getRecord((results, error) => { 
             /**
              * For this lab, complete the if else conditional
@@ -215,7 +205,6 @@ class ServiceNowAdapter extends EventEmitter {
         //const connector = new ServiceNowConnector();
 
         this.connector.get(callback => {
-
             let returnArr = { result: [] };
             if (callback) { 
                 if (callback.body) {                    
@@ -237,7 +226,7 @@ class ServiceNowAdapter extends EventEmitter {
                     let temp1 = JSON.stringify(returnArr);
                     let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
                     callback.body = temp2;
-                    log.info(`\nResponse returned after GET request:\n${temp2}`);
+                    log.info(`\nResponse returned after GET request:\n${callback.error}`);
                 }
             }
         });    
