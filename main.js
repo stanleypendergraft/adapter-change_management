@@ -220,7 +220,6 @@ class ServiceNowAdapter extends EventEmitter {
         log.info(`\nBefore get record.\n`);
         this.connector.get(callback => {
             log.info(`\nInside get record.\n`);
-            log.info(`\nCall back body returned from GET request:\n${JSON.stringify(callback.body)}`);
             let returnArr = { result: [] };
             if (callback) { 
                 if (callback.body) {                    
@@ -236,11 +235,13 @@ class ServiceNowAdapter extends EventEmitter {
                             work_end: resdata.result[i].work_end,
                             change_ticket_key: resdata.result[i].sys_id,
                         });
-                    }
-                    log.info(`\nResponse returned from GET request:\n${JSON.stringify(returnArr)}`);
+                    };
+                    
                     callback.body = '';
-                    callback.body = JSON.stringify(returnArr);
-                    log.info(`\nResponse returned after GET request:\n${JSON.stringify(returnArr)}`);
+                    let temp1 = JSON.stringify(returnArr);
+                    let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
+                    callback.body = temp2;
+                    log.info(`\nResponse returned after GET request:\n${temp2}`);
                 }
             }
             log.info(`\nLeaving get record.\n`);
@@ -283,10 +284,13 @@ class ServiceNowAdapter extends EventEmitter {
                         work_end: resdata.result.work_end,
                         change_ticket_key: resdata.result.sys_id
                     };
-
-                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(result)}`)
+                    
                     callback.body = '';
-                    callback.body = JSON.stringify(result);
+                    let temp1 = JSON.stringify(result);
+                    let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
+                    callback.body = temp2;
+                    callback.body = JSON.stringify(temp2);
+                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(temp2)}`);
                 }
             }
         });
