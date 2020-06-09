@@ -60,7 +60,6 @@ class ServiceNowConnector {
     let getCallOptions = { ...this.options };
     getCallOptions.method = 'GET';
     getCallOptions.query = 'sysparm_limit=1';
-    log.info(`\nStarting get.\n`);
     this.sendRequest(getCallOptions, (results, error) => callback(results, error));
   }
 
@@ -153,6 +152,7 @@ class ServiceNowConnector {
       log.error(callback.error);
     } else {
       callback.data = response;
+      log.info('Good results');
     }
     callback(callback.data, callback.error);
  }
