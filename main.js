@@ -120,9 +120,9 @@ class ServiceNowAdapter extends EventEmitter {
                 {
                     callback(results,error);
                 }
-            } else if (results.responseData && this.connector.isHibernating(results.responseData)) {
+ /*           } else if (results.responseData && this.connector.isHibernating(results.responseData)) {
                 this.emitOffline();
-                log.error('Service Now instance is hibernating');    
+                log.error('Service Now instance is hibernating');   */ 
             } else {
                 /**
                  * Write this block.
