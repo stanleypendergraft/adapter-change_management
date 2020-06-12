@@ -218,14 +218,8 @@ class ServiceNowAdapter extends EventEmitter {
                         });
                     };
                     
-                    //callback.r = '';
-                    let temp1 = JSON.stringify(returnArr);
-                    //let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
-                    //callback.body = temp2;
-                    results.body = "";
-                    results.body = temp1;
-                    callback(temp1,error);
-                    log.info(`\nResponse returned after GET request:\n${temp1}`);
+                    callback(returnArr,error);
+                    log.info(`\nResponse returned after GET request:\n${returnArr}`);
                 }
             }
         });    
@@ -268,13 +262,8 @@ class ServiceNowAdapter extends EventEmitter {
                         change_ticket_key: resdata.result.sys_id
                     };
                     
-                    results.body = '';
-                    let temp1 = JSON.stringify(result);
-                    //let temp2 = '\"' + temp1.replace(/\"/g, '\\\"') + '\"';
-                    results.body = temp1;
-                    results.body = JSON.stringify(temp1);
-                    callback(temp1,error);
-                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(temp1)}`);
+                    callback(result,error);
+                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(result)}`);
                 }
             }
         });
