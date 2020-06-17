@@ -201,13 +201,13 @@ class ServiceNowAdapter extends EventEmitter {
         //const connector = new ServiceNowConnector();
 
         this.connector.get((results, error) => {
-            let returnArr = { result: [] };
+            let returnArr =  new Array();
             if (results) { 
                 if (results) {                    
                     var resdata = JSON.parse(results.body);
 
                     for (var i = 0; i < resdata.result.length; i++) {
-                        returnArr.result.push({
+                        returnArr.push({
                             change_ticket_number: resdata.result[i].number,
                             active: resdata.result[i].active,
                             priority: resdata.result[i].priority,
