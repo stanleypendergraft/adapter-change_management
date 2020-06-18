@@ -219,7 +219,7 @@ class ServiceNowAdapter extends EventEmitter {
                     };
                     
                     callback(returnArr,error);
-                    log.info(`\nResponse returned after GET request:\n${returnArr}`);
+                    //log.info(`\nResponse returned after GET request:\n${returnArr}`);
                 }
             }
         });    
