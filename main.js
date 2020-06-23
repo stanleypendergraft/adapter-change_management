@@ -94,6 +94,7 @@ class ServiceNowAdapter extends EventEmitter {
      *   that handles the response.
      */
     healthcheck(callback) {
+        log.error(`\nStarting health check\n`);
         this.getRecord((results, error) => { 
             /**
              * For this lab, complete the if else conditional
@@ -101,6 +102,7 @@ class ServiceNowAdapter extends EventEmitter {
              * or the instance was hibernating. You must write
              * the blocks for each branch.
              */
+            log.error(`\nError is level in health check\n`);
             if (error) {
                 /**
                  * Write this block.
@@ -120,9 +122,6 @@ class ServiceNowAdapter extends EventEmitter {
                 {
                     callback(results,error);
                 }
- /*           } else if (results.responseData && this.connector.isHibernating(results.responseData)) {
-                this.emitOffline();
-                log.error('Service Now instance is hibernating');   */ 
             } else {
                 /**
                  * Write this block.
@@ -134,6 +133,7 @@ class ServiceNowAdapter extends EventEmitter {
                  * parameter as an argument for the callback function's
                  * responseData parameter.
                  */
+                 log.error(`\nNo error found ${error}\n`);
                 this.emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
                 if(callback)
@@ -203,7 +203,7 @@ class ServiceNowAdapter extends EventEmitter {
         this.connector.get((results, error) => {
             let returnArr =  new Array();
             if (results) { 
-                if (results) {                    
+                if (results.body) {                    
                     var resdata = JSON.parse(results.body);
 
                     for (var i = 0; i < resdata.result.length; i++) {
