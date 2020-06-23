@@ -148,7 +148,7 @@ class ServiceNowConnector {
       log.error('Bad response code.');
       error = response;
     }
-    else if (isHibernating(response)) {
+    else if (this.isHibernating(response)) {
       log.error('Service Now instance is hibernating');
     } else {
       callback = response;
