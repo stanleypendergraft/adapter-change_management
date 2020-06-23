@@ -94,15 +94,13 @@ class ServiceNowAdapter extends EventEmitter {
      *   that handles the response.
      */
     healthcheck(callback) {
-        log.error(`\nStarting health check\n`);
-        this.getRecord((results, error) => { 
+        this.getRecord((results, error) => {
             /**
              * For this lab, complete the if else conditional
              * statements that check if an error exists
              * or the instance was hibernating. You must write
              * the blocks for each branch.
              */
-            log.error(`\nError is level in health check\n`);
             if (error) {
                 /**
                  * Write this block.
@@ -118,9 +116,8 @@ class ServiceNowAdapter extends EventEmitter {
                  */
                 this.emitOffline();
                 log.error(`Error with ${this.id}`);
-                if(callback)
-                {
-                    callback(results,error);
+                if (callback) {
+                    callback(results, error);
                 }
             } else {
                 /**
@@ -133,12 +130,10 @@ class ServiceNowAdapter extends EventEmitter {
                  * parameter as an argument for the callback function's
                  * responseData parameter.
                  */
-                 log.error(`\nNo error found ${error}\n`);
                 this.emitOnline();
                 log.debug('No runtime problems were dectected during healthcheck');
-                if(callback)
-                {
-                    callback(results,error);
+                if (callback) {
+                    callback(results, error);
                 }
             }
         });
@@ -201,9 +196,9 @@ class ServiceNowAdapter extends EventEmitter {
         //const connector = new ServiceNowConnector();
 
         this.connector.get((results, error) => {
-            let returnArr =  new Array();
-            if (results) { 
-                if (results.body) {                    
+            let returnArr = new Array();
+            if (results) {
+                if (results.body) {
                     var resdata = JSON.parse(results.body);
 
                     for (var i = 0; i < resdata.result.length; i++) {
@@ -217,12 +212,12 @@ class ServiceNowAdapter extends EventEmitter {
                             change_ticket_key: resdata.result[i].sys_id,
                         });
                     };
-                    
-                    callback(returnArr,error);
+
+                    callback(returnArr, error);
                     //log.info(`\nResponse returned after GET request:\n${returnArr}`);
                 }
             }
-        });    
+        });
     }
 
     /**
@@ -243,7 +238,7 @@ class ServiceNowAdapter extends EventEmitter {
          */
         //const connector = new ServiceNowConnector(options);
         //const connector = new ServiceNowConnector();
-        this.connector.post((results, error)  => {
+        this.connector.post((results, error) => {
             let result;
             /*if (callback.error) {
                 console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
@@ -261,14 +256,14 @@ class ServiceNowAdapter extends EventEmitter {
                         work_end: resdata.result.work_end,
                         change_ticket_key: resdata.result.sys_id
                     };
-                    
-                    callback(result,error);
+
+                    callback(result, error);
                     log.info(`\nResponse returned from Post request:\n${JSON.stringify(result)}`);
                 }
             }
         });
     }
-    
+
 }
 
 module.exports = ServiceNowAdapter;

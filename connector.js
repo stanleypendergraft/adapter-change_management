@@ -141,19 +141,24 @@ class ServiceNowConnector {
    * This function must not check for a hibernating instance;
    * it must call function isHibernating.
    */
-    if (error) 
+   let returnData = null;
+   let returnError = null;
+    if (error) {
       log.error('Error present.');
-    else if (!validResponseRegex.test(response.statusCode)) 
-      log.error('Bad response code.');
-    else if (this.isHibernating(response)) {
-      log.error('Service Now instance is hibernating');
-      error = "";
-      callback(callback, error);
-    } else {
-      callback.data = response;
-      log.info('Good results');
-      callback(callback.data, error);
+      returnError = error;
     }
+    else if (!validResponseRegex.test(response.statusCode)) {
+      log.error('Bad response code.');
+      returnError = response;
+    }
+    else if (this.isHibernating(response)) {
+      returnError = 'Service Now instance is hibernating';
+      log.error(returnError);
+    } else {
+      returnData = response;
+      log.info('Return results are good.');
+    }
+    callback(returnData, returnError);
  }
 
  /**
