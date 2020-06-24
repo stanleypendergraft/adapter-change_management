@@ -112,9 +112,9 @@ class ServiceNowConnector {
    * @return {boolean} Returns true if instance is hibernating. Otherwise returns false.
    */
   isHibernating(response) {
-        return response.body.includes('Instance Hibernating page')
+        return (response.body.includes('Instance Hibernating page')
         && response.body.includes('<html>')
-        && response.statusCode === 200;
+        && response.statusCode === 200);
   }
 
   /**
@@ -143,7 +143,7 @@ class ServiceNowConnector {
    */
     let returnData = null;
     let returnError = null;
-
+    
     if (error) {
       log.error('Error present.');
       returnError = error;

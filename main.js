@@ -197,7 +197,11 @@ class ServiceNowAdapter extends EventEmitter {
 
         this.connector.get((results, error) => {
             let returnArr = new Array();
-            if (results) {
+            if (results === null) 
+            {
+                callback(results, error);
+            }
+            else if(results) {
                 if (results.body) {
                     var resdata = JSON.parse(results.body);
 
@@ -216,7 +220,7 @@ class ServiceNowAdapter extends EventEmitter {
                     callback(returnArr, error);
                     //log.info(`\nResponse returned after GET request:\n${returnArr}`);
                 }
-            }
+            } 
         });
     }
 
@@ -243,7 +247,11 @@ class ServiceNowAdapter extends EventEmitter {
             /*if (callback.error) {
                 console.error(`\nError returned from POST request:\n${JSON.stringify(callback.error)}`);
             }*/
-            if (results) {
+            if (results === null)
+            {
+                callback(result, error);
+            } 
+            else if (results) {
                 if (results.body) {
                     var resdata = JSON.parse(results.body);
 
@@ -258,7 +266,7 @@ class ServiceNowAdapter extends EventEmitter {
                     };
 
                     callback(result, error);
-                    log.info(`\nResponse returned from Post request:\n${JSON.stringify(result)}`);
+                    //log.info(`\nResponse returned from Post request:\n${JSON.stringify(result)}`);
                 }
             }
         });
